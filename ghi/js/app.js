@@ -10,12 +10,26 @@ function createCard(name, description, pictureUrl, newStartDate, newEndDate, loc
                 </div>
                 <div class="card-footer">
                 <small class="text-muted">${newStartDate}-${newEndDate}</small>
-            </div>
+                </div>
         </div>
     </div>
     `;
 }
+var alertPlaceholder = document.getElementById('liveAlertPlaceholder')
+var alertTrigger = document.getElementById('liveAlertBtn')
 
+function alert(message, type) {
+  var wrapper = document.createElement('div')
+  wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+
+  alertPlaceholder.append(wrapper)
+}
+
+if (alertTrigger) {
+  alertTrigger.addEventListener('click', function () {
+    alert('Nice, you triggered this alert message!', 'success')
+  })
+}
 // window.addEventListener('DOMContentLoaded', async () => {
 //     const url = 'http://localhost:8000/api/conferences/';
 
@@ -58,7 +72,9 @@ window.addEventListener('DOMContentLoaded', async () => {
   
       if (!response.ok) {
         // Figure out what to do when the response is bad
+        throw new Error('Response not ok')
       } else {
+        
         const data = await response.json();
   
         for (let conference of data.conferences) {
@@ -85,6 +101,7 @@ window.addEventListener('DOMContentLoaded', async () => {
       }
     } catch (e) {
       // Figure out what to do if an error is raised
+      error => console.error('error', error)
     }
   
 });
