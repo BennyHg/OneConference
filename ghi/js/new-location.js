@@ -20,6 +20,7 @@ window.addEventListener('DOMContentLoaded', async () => {
             option.innerHTML = state.name
             // Append the option element as a child of the select tag
             selectTag.appendChild(option)
+
         }
     }
 
@@ -29,7 +30,6 @@ window.addEventListener('DOMContentLoaded', async () => {
         event.preventDefault();
         const formData = new FormData(formTag);
         const json = JSON.stringify(Object.fromEntries(formData));
-
         const locationUrl = 'http://localhost:8000/api/locations/';
         const fetchConfig = {
             method: "post",
