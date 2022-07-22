@@ -5,11 +5,11 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (response.ok) {
         const data = await response.json()
 
-        const selectTag = document.getElementById('location')
+        const selectTag = document.querySelector('#location')
 
         for (let location of data.locations) {
             let option = document.createElement('option')
-            option.value = 
+            option.value = location.id
             option.innerHTML = location.name
             selectTag.appendChild(option)
         }

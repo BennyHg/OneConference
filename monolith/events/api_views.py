@@ -93,8 +93,7 @@ def api_list_conferences(request):
 
         # Get the Location object and put it in the content dict
         try:
-            print("content", content["location"])
-            location = Location.objects.get(name=content["location"]) # changed from id=content["location"]
+            location = Location.objects.get(id=content["location"]) # changed from id=content["location"]
             content["location"] = location
         except Location.DoesNotExist:
             return JsonResponse(
