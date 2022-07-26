@@ -76,7 +76,7 @@ class LocationForm extends React.Component {
       
         if (response.ok) {
             const data = await response.json();
-            this.setState({states: data.states})
+            this.setState({states: data.states});
         }
     }
       

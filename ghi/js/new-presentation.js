@@ -9,7 +9,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
         for (let conference of data.conferences) {
             let option = document.createElement('option')
-            option.value = conference.href
+            option.value = conference.id
             option.innerHTML = conference.name
             selectTag.appendChild(option)
         }
