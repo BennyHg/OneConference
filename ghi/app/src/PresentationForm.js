@@ -17,6 +17,46 @@ class PresentationForm extends React.Component {
         this.handleTitleChange = this.handleTitleChange.bind(this)
         this.handleSynopsisChange = this.handleSynopsisChange.bind(this)
         this.handleConferenceChange = this.handleConferenceChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
+    }
+
+    async handleSubmit(event) {
+        event.preventDefault();
+        const data = {...this.state}
+        data.presenter_name = data.presenterName
+        data.presenter_email = data.presenterEmail
+        data.company_name = data.companyName
+        delete data.presenterName
+        delete data.presenterEmail
+        delete data.companyName
+        delete data.conferences
+
+        let conferenceId = data.conference
+        console.log(conferenceId)
+        const presentationUrl = `http://localhost:8000/api/conferences/${conferenceId}/presentations/`
+        console.log(presentationUrl)
+        const fetchConfig = {
+            method: "post",
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+        let response = await fetch(presentationUrl, fetchConfig);
+        if (response.ok) {
+            const newPresentation = await response.json()
+            console.log(newPresentation)
+
+            const cleared = {
+                presenterName: '',
+                presenterEmail: '',
+                companyName: '',
+                title: '',
+                synopsis: '',
+                conferences: ''
+            };
+            this.setState(cleared)
+        }
     }
 
     handlePresenterNameChange(event) {
@@ -66,7 +106,7 @@ class PresentationForm extends React.Component {
             <div className="offset-3 col-6">
               <div className="shadow p-4 mt-4">
                 <h1>Create a new presentation</h1>
-                <form id="create-presentation-form">
+                <form onSubmit={this.handleSubmit} id="create-presentation-form">
                   <div className="form-floating mb-3">
                     <input value={this.state.presenterName} onChange={this.handlePresenterNameChange} placeholder="Presenter name" required type="text" name="presenter_name" id="presenter_name" className="form-control"/>
                     <label htmlFor="presenter_name">Presenter name</label>
@@ -90,13 +130,13 @@ class PresentationForm extends React.Component {
                   <div className="mb-3">
                     <select value={this.state.conference} onChange={this.handleConferenceChange} required id="conference" className="form-select" name="conference">
                       <option value="">Choose a conference</option>
-                      {this.state.conferences.map(conference => {
+                      {this.state.conferences ? this.state.conferences.map(conference => {
                         return (
-                            <option key={conference.name} value={conference.name}>
+                            <option key={conference.id} value={conference.id}>
                                 {conference.name}
                             </option>
                         )
-                      })}
+                    }) : null }
                     </select>
                   </div> 
                   <button className="btn btn-primary">Create</button>

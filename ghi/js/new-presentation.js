@@ -14,17 +14,18 @@ window.addEventListener('DOMContentLoaded', async () => {
             selectTag.appendChild(option)
         }
     }
-
+    
+    const selectTag = document.getElementById('conference');
     const formTag = document.getElementById('create-presentation-form')
     formTag.addEventListener('submit', async event => {
         event.preventDefault()
         const formData = new FormData(formTag)
         const json = JSON.stringify(Object.fromEntries(formData))
 
-        const conferenceId = document.querySelector('#conference').value
+        const conferenceId = selectTag.options[selectTag.selectedIndex].value;
         console.log(conferenceId)
 
-        const presentationUrl = `http://localhost:8000${conferenceId}presentations/`
+        const presentationUrl = `http://localhost:8000/${conferenceId}/presentations/`
         const fetchConfig = {
             method: "post",
             body: json,
